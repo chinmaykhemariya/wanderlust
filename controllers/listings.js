@@ -68,7 +68,11 @@ module.exports.updateListing=async(req,res,next)=>{
     
     // if(!req.body.data){throw new ExpressError(400,"data is not present")}
     let data=req.body.data;
-    
+    let response=  await geocodingClient.forwardGeocode({
+        query: req.body.data.location,
+        limit: 1
+             }).send()
+    data.geometry=response.body.features[0].geometry; 
     if(req.file){
         let url=req.file.path;
     let filename=req.file.filename;
